@@ -129,6 +129,10 @@ in
           ${lib.getExe sbctlWithPki} enroll-keys --yes-this-might-brick-my-machine
         ''}
 
+        profilesLinks=$(ls -d /nix/var/nix/profiles/system-profiles/*-*-link 2>/dev/null)
+        systemLinks=$(ls -d /nix/var/nix/profiles/system-*-link 2>/dev/null)
+        links=$(echo $profilesLinks $systemLinks)
+
         # Use the system from the kernel's hostPlatform because this should
         # always, even in the cross compilation case, be the right system.
         ${lib.getExe cfg.package} install \
@@ -139,7 +143,7 @@ in
           --private-key ${cfg.privateKeyFile} \
           --configuration-limit ${toString configurationLimit} \
           ${config.boot.loader.efi.efiSysMountPoint} \
-          /nix/var/nix/profiles/system-*-link
+          $links
       '';
     };
 
