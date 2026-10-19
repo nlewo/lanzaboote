@@ -73,6 +73,8 @@ pub struct Generation {
     pub spec: ExtendedBootJson,
     /// The set of specialisations of this generation
     pub specialisations: HashMap<SpecialisationName, Generation>,
+    /// Label of the generation
+    pub label: String,
 }
 
 impl Generation {
@@ -104,6 +106,7 @@ impl Generation {
                 link,
                 specialisation.generation.specialisations,
             )?,
+            label: String::new(),
         })
     }
 
@@ -136,6 +139,7 @@ impl Generation {
                 lanzaboote_extension: boot_json.into(),
             },
             specialisations: Self::parse_specialisations(link, bootspec.specialisations)?,
+            label: String::new(),
         })
     }
 
